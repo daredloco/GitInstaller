@@ -1,7 +1,7 @@
 {
-    "project": "Software Inc Multiplayer",
-    "user": "software-inc-multiplayer",
-    "repo": "software-inc-multiplayer",
+    "project": "GitInstaller",
+    "user": "daredloco",
+    "repo": "GitInstaller",
     "targetdir": "",
     "unzip": true,
     "ignored-tags": []
