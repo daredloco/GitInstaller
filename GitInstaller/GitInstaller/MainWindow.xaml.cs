@@ -117,16 +117,52 @@ namespace GitInstaller
 
 		internal void UpdateChanges(Installer.GitRelease release)
 		{
-			string content = release.Body;
-			Paragraph para = new Paragraph();
-			para.Inlines.Add(content);
+			string[] lines = release.Body.Split('\n');
+
 			rtb_changes.Document.Blocks.Clear();
-			rtb_changes.Document.Blocks.Add(para);
+			foreach (string line in lines)
+			{
+				string newline = line.Replace("\n", "").Replace("\r","");
+				Paragraph para = new Paragraph();
+
+				if(line.StartsWith("####"))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.ExtraBold;
+				}
+				else if(line.StartsWith("###"))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.Bold;
+				}
+				else if(line.StartsWith("##"))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.SemiBold;
+				}	
+				else if(line.StartsWith("#"))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.DemiBold;
+				}
+
+				para.Inlines.Add(newline);
+				rtb_changes.Document.Blocks.Add(para);
+			}
+
+			//Old
+			//string content = release.Body;
+			//Paragraph para = new Paragraph();
+			//para.Inlines.Add(content);
+			//rtb_changes.Document.Blocks.Clear();
+			//rtb_changes.Document.Blocks.Add(para);
 		}
 
 		internal void UpdateVersions(bool withpreviews)
 		{
 			cb_versions.Items.Clear();
+			if (installer == null)
+				return;
 			foreach (Installer.GitRelease release in installer.Releases)
 			{
 				if (withpreviews)
