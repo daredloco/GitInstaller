@@ -15,9 +15,23 @@ namespace GitInstaller
 			Invalid
 		}
 
+		/// <summary>
+		/// The actual state of the settings.
+		/// </summary>
 		internal static SettingsState State { get; private set; } = SettingsState.NotLoaded;
 		static readonly string _path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"config.json");
+		/// <summary>
+		/// a representation of the settingsfile
+		/// </summary>
 		internal static SettingsFile file;
+
+		internal static string Project { get { return file.project; } }
+		internal static string User { get { return file.user; } }
+		internal static string Repo { get { return file.repo; } }
+		internal static bool Unzip { get { return file.unzip; } }
+		internal static bool Preview { get { return file.preview; } }
+		internal static string[] Ignored_Tags { get { return file.ignored_tags; } }
+		internal static string[] Ignored_Files { get { return file.ignored_files; } }
 
 		/// <summary>
 		/// Returns the Url to the Releases of the GitHub Api or NULL if settings aren't loaded
@@ -27,6 +41,9 @@ namespace GitInstaller
 			get { if (State == SettingsState.Loaded) { return new Uri($"https://api.github.com/repos/{file.user}/{file.repo}/releases"); } else { return null; } }
 		}
 
+		/// <summary>
+		/// Loads the settings from the config.json inside the applications directory
+		/// </summary>
 		internal static void Load()
 		{
 			switch(State)

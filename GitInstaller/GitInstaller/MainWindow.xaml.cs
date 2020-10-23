@@ -12,12 +12,14 @@ namespace GitInstaller
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		Installer installer;
+		readonly Installer installer;
+
+		public static MainWindow Instance;
 
 		public MainWindow()
 		{
 			InitializeComponent();
-
+			Instance = this;
 			cb_versions.SelectedValuePath = "Key";
 			cb_versions.DisplayMemberPath = "Value";
 			cb_versions.SelectionChanged += VersionChanged;
@@ -31,9 +33,9 @@ namespace GitInstaller
 			Settings.Load();
 			if(Settings.State == Settings.SettingsState.Loaded)
 			{
-				Title = Settings.file.project + " - Powered by GitInstaller " + Assembly.GetExecutingAssembly().GetName().Version;
-				cb_preview.IsChecked = Settings.file.preview;
-				installer = new Installer(Settings.ApiUrl, this);
+				Title = Settings.Project + " - Powered by GitInstaller " + Assembly.GetExecutingAssembly().GetName().Version;
+				cb_preview.IsChecked = Settings.Preview;
+				installer = new Installer(Settings.ApiUrl);
 			}
 			else
 			{

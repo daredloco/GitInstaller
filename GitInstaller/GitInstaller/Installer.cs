@@ -17,18 +17,29 @@ namespace GitInstaller
 		string _releasesjson;
 		string _installdir;
 		GitRelease _installrelease;
+		/// <summary>
+		/// List of GitRelease objects fetched from Github
+		/// </summary>
 		internal List<GitRelease> Releases = new List<GitRelease>();
 		
-		internal Installer(Uri url, MainWindow window)
+		/// <summary>
+		/// Installer backend.
+		/// Enter the URL and the backend will start fetching the versions
+		/// </summary>
+		/// <param name="url">The url to the Github repo, will be created from the config.json content</param>
+		internal Installer(Uri url)
 		{
 			_url = url;
-			_window = window;
+			_window = MainWindow.Instance;
 			GetVersions();
 		}
 
+		/// <summary>
+		/// Fetches the different versions/releases from the Githup repo
+		/// </summary>
 		async void GetVersions()
 		{
-			_window.WriteLog("Trying to fetch versions of the project from GitHub...");
+			_window.WriteLog("Trying to fetch releases from GitHub...");
 			_window.prog_loading.IsIndeterminate = true;
 
 			using (var client = new WebClient())
@@ -74,7 +85,7 @@ namespace GitInstaller
 						robj.Assets.Add(newasset);
 					}
 
-					if(!Array.Exists(Settings.file.ignored_tags, x => x == robj.Tag))
+					if(!Array.Exists(Settings.Ignored_Tags, x => x == robj.Tag))
 					{
 						idcount++;
 						Releases.Add(robj);
@@ -92,10 +103,15 @@ namespace GitInstaller
 			_window.bt_install.IsEnabled = true;
 			_window.WriteLog("Done creating release objects, " + Releases.Count + " releases added...");
 
-			_window.UpdateVersions(Settings.file.preview);
+			_window.UpdateVersions(Settings.Preview);
 			_window.UpdateChanges(Releases[0]);
 		}
 
+		/// <summary>
+		/// Starts the installation of the release
+		/// </summary>
+		/// <param name="releaseindex">The index of the release as in the Releases List</param>
+		/// <param name="installdir">The installation directory</param>
 		internal void StartInstallation(int releaseindex, string installdir)
 		{
 			_window.bt_install.IsEnabled = false;
@@ -105,6 +121,9 @@ namespace GitInstaller
 			DownloadAssets();
 		}
 
+		/// <summary>
+		/// Downloads the Assets from the actual Release
+		/// </summary>
 		async void DownloadAssets()
 		{
 			
@@ -126,7 +145,7 @@ namespace GitInstaller
 					client.Headers.Add("user-agent", "GitInstaller");
 					try
 					{
-						if (!Array.Exists(Settings.file.ignored_files, x => x == asset.Filename))
+						if (!Array.Exists(Settings.Ignored_Files, x => x == asset.Filename))
 						{
 							string installfname = Path.Combine(_installdir, asset.Filename);
 							await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
@@ -155,10 +174,14 @@ namespace GitInstaller
 				return;
 			}
 
-			if(Settings.file.unzip)
+			if(Settings.Unzip)
 				UnzipInstalledData(downloadedfiles.ToArray());
 		}
 
+		/// <summary>
+		/// Unpacks the files from downloadedfiles
+		/// </summary>
+		/// <param name="downloadedfiles">The locations of the downloaded files</param>
 		async void UnzipInstalledData(string[] downloadedfiles)
 		{
 			_window.WriteLog("Unpack zip archives...");
