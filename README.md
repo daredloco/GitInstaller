@@ -14,6 +14,7 @@ All you have to do is to change the values inside the config.json file and you'r
     "repo": "GitInstaller",
     "targetdir": "",
     "unzip": true,
+    "preview": true,
     "ignored-tags": []
 }
 ```
@@ -23,6 +24,7 @@ All you have to do is to change the values inside the config.json file and you'r
 - repo: The name of your repository
 - targetdir: No use at the moment
 - unzip: Will unpack all zip files to the folder selected by the user and delete the zip files afterwards
+- preview: If true, preview releases will be included, if false they'll not but the user will always be able to enable them afterwards.
 - ignore-tags: No use at the moment
 
 Example from a github link: https://github.com/{user}/{repo}/
