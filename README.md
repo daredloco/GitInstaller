@@ -1,6 +1,8 @@
 # GitInstaller
 A simple installer for software released on GitHub for Windows
 
+![Installer Preview](https://www.rowa-digital.ch/installer.png)
+
 ## Usage
 The installer is very easy to setup.
 All you have to do is to change the values inside the config.json file and you're ready to go.
