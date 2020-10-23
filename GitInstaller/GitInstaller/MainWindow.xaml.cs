@@ -124,7 +124,7 @@ namespace GitInstaller
 			{
 				string newline = line.Replace("\n", "").Replace("\r","");
 				Paragraph para = new Paragraph();
-
+				para.Margin = new Thickness(0);
 				if(line.StartsWith("####"))
 				{
 					newline = line.TrimStart('#');
