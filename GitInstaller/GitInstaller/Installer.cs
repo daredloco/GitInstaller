@@ -63,7 +63,6 @@ namespace GitInstaller
 					robj.AuthorUrl = authorobj.Value<string>("html_url");
 
 					//Assets
-					//JObject[] assets = job.Value<JObject[]>("assets");
 					JToken assets = job.Value<JToken>("assets");
 					
 					foreach (JToken asset in assets.Children())
@@ -75,8 +74,11 @@ namespace GitInstaller
 						robj.Assets.Add(newasset);
 					}
 
-					idcount++;
-					Releases.Add(robj);
+					if(!Array.Exists(Settings.file.ignored_tags, x => x == robj.Tag))
+					{
+						idcount++;
+						Releases.Add(robj);
+					}
 				}
 				_window.cb_versions.SelectedIndex = 0;
 			}

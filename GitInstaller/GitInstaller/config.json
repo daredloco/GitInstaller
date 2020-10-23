@@ -5,6 +5,6 @@
     "targetdir": "",
     "unzip": true,
     "preview": true,
-    "ignored-tags": [],
+    "ignored-tags": ["v1.0"],
     "ignored-files": ["GitInstaller.zip"]
 }
