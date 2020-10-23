@@ -26,7 +26,6 @@ namespace GitInstaller
 			cb_versions.SelectionChanged += VersionChanged;
 			cb_preview.Checked += PreviewChecked;
 			cb_preview.Unchecked += PreviewUnchecked;
-			rtb_changes.IsReadOnly = true;
 			rtb_log.IsReadOnly = true;
 			bt_install.IsEnabled = false;
 			bt_install.Click += InstallClicked;
@@ -146,21 +145,28 @@ namespace GitInstaller
 					newline = line.TrimStart('#');
 					para.FontWeight = FontWeights.ExtraBlack;
 				}
-				else if(Regex.IsMatch(line,""))
-				{
 
+				//Get Links and Images
+				Match match = Regex.Match(line, "!\\[.*\\]?\\(.*\\)");
+				while(match.Success)
+				{
+					Regex Pattern = new Regex("\\(.*\\)");
+					Match newmatch = Pattern.Match(match.Value);
+					string link = newmatch.Value.Trim('(',')');
+					WriteLog(match.Value + " => " + link);
+
+					if(link.EndsWith(".jpg") || link.EndsWith(".png"))
+						newline = "";
+					else
+						newline.Replace(match.Value, link);
+					
+
+					match = match.NextMatch();
+					para.FontStyle = FontStyles.Italic;
 				}
-				
 				para.Inlines.Add(newline);
 				rtb_changes.Document.Blocks.Add(para);
 			}
-
-			//Old
-			//string content = release.Body;
-			//Paragraph para = new Paragraph();
-			//para.Inlines.Add(content);
-			//rtb_changes.Document.Blocks.Clear();
-			//rtb_changes.Document.Blocks.Add(para);
 		}
 
 		internal void UpdateVersions(bool withpreviews)
