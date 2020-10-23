@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace GitInstaller
 {
@@ -66,14 +65,13 @@ namespace GitInstaller
 		private void InstallClicked(object sender, RoutedEventArgs e)
 		{
 			int idx = cb_versions.SelectedIndex;
-			using (var dialog = new CommonOpenFileDialog())
+			using (System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog())
 			{
-				dialog.Title = "Choose an installation directory:";
-				dialog.IsFolderPicker = true;
-				CommonFileDialogResult result = dialog.ShowDialog();
-				if (result == CommonFileDialogResult.Ok)
+				fbd.Description = "Choose an installation directory:";
+				var result = fbd.ShowDialog();
+				if(result == System.Windows.Forms.DialogResult.OK)
 				{
-					installer.StartInstallation(idx, dialog.FileName);
+					installer.StartInstallation(idx, fbd.SelectedPath);
 				}
 			}	
 		}
