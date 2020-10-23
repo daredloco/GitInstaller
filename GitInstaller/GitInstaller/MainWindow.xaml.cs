@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Text.RegularExpressions;
 
 namespace GitInstaller
 {
@@ -115,27 +116,41 @@ namespace GitInstaller
 				string newline = line.Replace("\n", "").Replace("\r","");
 				Paragraph para = new Paragraph();
 				para.Margin = new Thickness(0);
-				if(line.StartsWith("####"))
+				if (line.StartsWith("###### "))
 				{
 					newline = line.TrimStart('#');
-					para.FontWeight = FontWeights.ExtraBold;
+					para.FontWeight = FontWeights.Medium;
 				}
-				else if(line.StartsWith("###"))
-				{
-					newline = line.TrimStart('#');
-					para.FontWeight = FontWeights.Bold;
-				}
-				else if(line.StartsWith("##"))
-				{
-					newline = line.TrimStart('#');
-					para.FontWeight = FontWeights.SemiBold;
-				}	
-				else if(line.StartsWith("#"))
+				else if (line.StartsWith("##### "))
 				{
 					newline = line.TrimStart('#');
 					para.FontWeight = FontWeights.DemiBold;
 				}
+				else if(line.StartsWith("#### "))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.Bold;
+				}
+				else if(line.StartsWith("### "))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.ExtraBold;
+				}
+				else if(line.StartsWith("## "))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.Black;
+				}	
+				else if(line.StartsWith("# "))
+				{
+					newline = line.TrimStart('#');
+					para.FontWeight = FontWeights.ExtraBlack;
+				}
+				else if(Regex.IsMatch(line,""))
+				{
 
+				}
+				
 				para.Inlines.Add(newline);
 				rtb_changes.Document.Blocks.Add(para);
 			}
