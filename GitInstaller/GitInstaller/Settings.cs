@@ -75,6 +75,8 @@ namespace GitInstaller
 			public bool preview;
 			[JsonProperty("ignored-tags")]
 			public string[] ignored_tags;
+			[JsonProperty("ignored-files")]
+			public string[] ignored_files;
 
 			public SettingsFile() { }
 		}

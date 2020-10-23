@@ -124,11 +124,19 @@ namespace GitInstaller
 					client.Headers.Add("user-agent", "GitInstaller");
 					try
 					{
-						string installfname = Path.Combine(_installdir, asset.Filename);
-						await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
-						downloadedfiles.Add(installfname);
-						assetcount++;
-						_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+						if (!Array.Exists(Settings.file.ignored_files, x => x == asset.Filename))
+						{
+							string installfname = Path.Combine(_installdir, asset.Filename);
+							await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+							downloadedfiles.Add(installfname);
+							assetcount++;
+							_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+						}
+						else
+						{
+							_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
+							assetcount++;
+						}
 					}
 					catch (Exception ex)
 					{
