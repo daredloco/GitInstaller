@@ -24,6 +24,8 @@
                 <RowDefinition Height="23" />
                 <RowDefinition Height="15" />
                 <RowDefinition Height="23" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="23" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="25" />
                 <RowDefinition Height="30" />
@@ -34,9 +36,10 @@
             <ComboBox Name="cb_versions" Grid.Row="2" Height="23" SelectedIndex="0">
                 <ComboBoxItem Content="None"></ComboBoxItem>
             </ComboBox>
-            <Button Name="bt_install" Grid.Row="7" Content="Install" />
-            <Label Content="Version Details:" Grid.Row="4" />
-            <RichTextBox Name="rtb_changes" Grid.Row="5">
+            <CheckBox Name="cb_preview" Content="Show Preview Releases" Grid.Row="4" VerticalAlignment="Center" />
+            <Button Name="bt_install" Grid.Row="9" Content="Install" />
+            <Label Content="Version Details:" Grid.Row="6" />
+            <RichTextBox Name="rtb_changes" Grid.Row="7">
                 <RichTextBox.Resources>
                     <Style TargetType="{x:Type Paragraph}">
                         <Setter Property="Margin" Value="0" />

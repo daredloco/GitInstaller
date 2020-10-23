@@ -76,6 +76,7 @@ namespace GitInstaller
 			public string user;
 			public string repo;
 			public bool unzip;
+			public bool preview;
 			[JsonProperty("ignored-tags")]
 			public string[] ignored_tags;
 

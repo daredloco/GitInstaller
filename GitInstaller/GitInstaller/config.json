@@ -4,5 +4,6 @@
     "repo": "GitInstaller",
     "targetdir": "",
     "unzip": true,
+    "preview": true,
     "ignored-tags": []
 }

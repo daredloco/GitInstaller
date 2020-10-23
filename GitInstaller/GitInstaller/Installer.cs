@@ -14,15 +14,13 @@ namespace GitInstaller
 {
 	internal class Installer
 	{
-		MainWindow _window;
-		Uri _url;
+		readonly MainWindow _window;
+		readonly Uri _url;
 		string _releasesjson;
 		string _installdir;
 		GitRelease _installrelease;
 		internal List<GitRelease> Releases = new List<GitRelease>();
-		EventHandler OnDownloadComplete;
-		EventHandler OnInstallationComplete;
-
+		
 		internal Installer(Uri url, MainWindow window)
 		{
 			_url = url;
@@ -81,9 +79,7 @@ namespace GitInstaller
 
 					idcount++;
 					Releases.Add(robj);
-					_window.cb_versions.Items.Add(robj.Tag);
 				}
-
 				_window.cb_versions.SelectedIndex = 0;
 			}
 			_window.prog_loading.IsIndeterminate = false;
@@ -96,6 +92,7 @@ namespace GitInstaller
 			_window.bt_install.IsEnabled = true;
 			_window.WriteLog("Done creating release objects, " + Releases.Count + " releases added...");
 
+			_window.UpdateVersions(Settings.file.preview);
 			_window.UpdateChanges(Releases[0]);
 		}
 

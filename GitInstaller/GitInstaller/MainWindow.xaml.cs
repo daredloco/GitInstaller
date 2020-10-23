@@ -29,7 +29,11 @@ namespace GitInstaller
 		{
 			InitializeComponent();
 
+			cb_versions.SelectedValuePath = "Key";
+			cb_versions.DisplayMemberPath = "Value";
 			cb_versions.SelectionChanged += VersionChanged;
+			cb_preview.Checked += PreviewChecked;
+			cb_preview.Unchecked += PreviewUnchecked;
 			rtb_changes.IsReadOnly = true;
 			rtb_log.IsReadOnly = true;
 			bt_install.IsEnabled = false;
@@ -39,6 +43,7 @@ namespace GitInstaller
 			if(Settings.State == Settings.SettingsState.Loaded)
 			{
 				Title = Settings.file.project + " - Powered by GitInstaller " + Assembly.GetExecutingAssembly().GetName().Version;
+				cb_preview.IsChecked = Settings.file.preview;
 				installer = new Installer(Settings.ApiUrl, this);
 			}
 			else
@@ -46,6 +51,16 @@ namespace GitInstaller
 				MessageBox.Show("The Installer can't progress because the settings file couldn't loaded!");
 				Environment.Exit(1);
 			}
+		}
+
+		private void PreviewUnchecked(object sender, RoutedEventArgs e)
+		{
+			UpdateVersions(false);
+		}
+
+		private void PreviewChecked(object sender, RoutedEventArgs e)
+		{
+			UpdateVersions(true);
 		}
 
 		private void InstallClicked(object sender, RoutedEventArgs e)
@@ -65,7 +80,18 @@ namespace GitInstaller
 
 		private void VersionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			int idx = cb_versions.SelectedIndex;
+			if(cb_versions.SelectedIndex == -1)
+			{
+				return;
+			}
+			KeyValuePair<int, string> kvp = (KeyValuePair<int, string>)cb_versions.Items[cb_versions.SelectedIndex];
+			int idx = kvp.Key;
+			if (idx == -1)
+			{
+				rtb_changes.Document.Blocks.Clear();
+				return;
+			}
+
 			try
 			{
 				UpdateChanges(installer.Releases[idx]);
@@ -96,6 +122,28 @@ namespace GitInstaller
 			para.Inlines.Add(content);
 			rtb_changes.Document.Blocks.Clear();
 			rtb_changes.Document.Blocks.Add(para);
+		}
+
+		internal void UpdateVersions(bool withpreviews)
+		{
+			cb_versions.Items.Clear();
+			foreach (Installer.GitRelease release in installer.Releases)
+			{
+				if (withpreviews)
+					cb_versions.Items.Add(new KeyValuePair<int, string>(release.Id, release.Tag));
+				else if (!withpreviews && !release.IsPrerelease)
+					cb_versions.Items.Add(new KeyValuePair<int, string>(release.Id, release.Tag));
+			}
+			if(cb_versions.Items.Count < 1)
+			{
+				cb_versions.Items.Add(new KeyValuePair<int, string>(-1, "None"));
+				bt_install.IsEnabled = false;
+			}
+			else
+			{
+				bt_install.IsEnabled = true;
+			}
+			cb_versions.SelectedIndex = 0;
 		}
 	}
 }
