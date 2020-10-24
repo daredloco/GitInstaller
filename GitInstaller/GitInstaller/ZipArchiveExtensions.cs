@@ -40,6 +40,11 @@ namespace GitInstaller
 				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
 				return;
 			}
+			if(string.IsNullOrEmpty(settings.Subfolder))
+			{
+				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
+				return;
+			}
 			foreach(ZipArchiveEntry file in archive.Entries)
 			{
 				string completeFileName = Path.Combine(destinationDirectoryName, settings.Subfolder, file.FullName);

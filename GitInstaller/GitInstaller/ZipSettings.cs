@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GitInstaller
 {
@@ -12,6 +13,7 @@ namespace GitInstaller
 	public class ZipSettings
 	{
 		public string Subfolder;
+		public JObject Subfolders;
 
 		public ZipSettings() { }
 

@@ -1,3 +1,7 @@
 {
-    "Subfolder": "test"
+    "Subfolder": "test",
+    "Subfolders": [
+        { "Sub1": ["file1.txt", "file2.txt"] },
+        { "Sub2": ["dir1", "file3.txt"] }
+    ]
 }
