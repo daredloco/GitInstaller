@@ -2,7 +2,6 @@
     "project": "GitInstaller",
     "user": "daredloco",
     "repo": "GitInstaller",
-    "targetdir": "",
     "unzip": true,
     "preview": true,
     "ignored-tags": ["v1.0"],
