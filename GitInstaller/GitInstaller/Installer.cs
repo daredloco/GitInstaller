@@ -91,6 +91,7 @@ namespace GitInstaller
 						Releases.Add(robj);
 					}
 				}
+
 				_window.cb_versions.SelectedIndex = 0;
 			}
 			_window.prog_loading.IsIndeterminate = false;
