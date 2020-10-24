@@ -25,7 +25,8 @@ namespace GitInstaller
 			}
 			else
 			{
-				return true ;
+				if (value == wildcard)
+					return true;
 			}
 			return false;
 		}

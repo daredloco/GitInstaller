@@ -56,7 +56,7 @@ namespace GitInstaller
 				int idcount = 0;
 				Releases.Clear();
 				_window.cb_versions.Items.Clear();
-
+				
 				foreach (JObject job in jobjs)
 				{
 					GitRelease robj = new GitRelease();
@@ -85,11 +85,22 @@ namespace GitInstaller
 						robj.Assets.Add(newasset);
 					}
 
-					if(!Array.Exists(Settings.Ignored_Tags, x => x == robj.Tag))
+
+					foreach(string ignoredtags in Settings.Ignored_Tags)
 					{
-						idcount++;
-						Releases.Add(robj);
+						if(!Utils.HasWildcard(robj.Tag,ignoredtags))
+						{
+							idcount++;
+							Releases.Add(robj);
+						}
 					}
+
+					//Old
+					//if(!Array.Exists(Settings.Ignored_Tags, x => x == robj.Tag))
+					//{
+					//	idcount++;
+					//	Releases.Add(robj);
+					//}
 				}
 
 				_window.cb_versions.SelectedIndex = 0;
