@@ -26,8 +26,30 @@ namespace GitInstaller
 				if (!Directory.Exists(directory))
 					Directory.CreateDirectory(directory);
 
-				if (file.Name != "")
+				if (string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
 					file.ExtractToFile(completeFileName, true);
+			}
+		}
+
+		//Added by daRedLoCo
+		public static void ExtractWithSettings(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
+		{
+			ZipSettings settings = ZipSettings.FromStream(archive.GetEntry("zipsettings.json").Open());
+			if(settings == null)
+			{
+				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
+				return;
+			}
+			foreach(ZipArchiveEntry file in archive.Entries)
+			{
+				string completeFileName = Path.Combine(destinationDirectoryName, settings.Subfolder, file.FullName);
+				string directory = Path.GetDirectoryName(completeFileName);
+
+				if (!Directory.Exists(directory))
+					Directory.CreateDirectory(directory);
+
+				if (string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
+					file.ExtractToFile(completeFileName, overwrite);
 			}
 		}
 	}

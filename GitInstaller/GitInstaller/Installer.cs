@@ -227,7 +227,7 @@ namespace GitInstaller
 						{
 							using(ZipArchive archive = new ZipArchive(fs))
 							{
-								ZipArchiveExtensions.ExtractToDirectory(archive, fi.DirectoryName, true);
+								ZipArchiveExtensions.ExtractWithSettings(archive, fi.DirectoryName, true);
 							}
 						}
 						File.Delete(fname);
