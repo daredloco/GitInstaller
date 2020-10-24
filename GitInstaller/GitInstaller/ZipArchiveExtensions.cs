@@ -26,7 +26,7 @@ namespace GitInstaller
 				if (!Directory.Exists(directory))
 					Directory.CreateDirectory(directory);
 
-				if (string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
+				if (!string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
 					file.ExtractToFile(completeFileName, true);
 			}
 		}
@@ -37,18 +37,20 @@ namespace GitInstaller
 			ZipSettings settings = ZipSettings.FromStream(archive.GetEntry("zipsettings.json").Open());
 			if(settings == null)
 			{
+				Console.WriteLine("Settings is NULL!");
 				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
 				return;
 			}
 			foreach(ZipArchiveEntry file in archive.Entries)
 			{
+				Console.WriteLine(file.Name);
 				string completeFileName = Path.Combine(destinationDirectoryName, settings.Subfolder, file.FullName);
 				string directory = Path.GetDirectoryName(completeFileName);
 
 				if (!Directory.Exists(directory))
 					Directory.CreateDirectory(directory);
 
-				if (string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
+				if (!string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
 					file.ExtractToFile(completeFileName, overwrite);
 			}
 		}

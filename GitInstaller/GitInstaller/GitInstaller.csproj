@@ -115,6 +115,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="zipsettings.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
