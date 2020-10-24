@@ -157,19 +157,38 @@ namespace GitInstaller
 					client.Headers.Add("user-agent", "GitInstaller");
 					try
 					{
-						if (!Array.Exists(Settings.Ignored_Files, x => x == asset.Filename))
+
+						foreach(string ignoredfile in Settings.Ignored_Files)
 						{
-							string installfname = Path.Combine(_installdir, asset.Filename);
-							await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
-							downloadedfiles.Add(installfname);
-							assetcount++;
-							_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+							if(!Utils.HasWildcard(asset.Filename, ignoredfile))
+							{
+								string installfname = Path.Combine(_installdir, asset.Filename);
+								await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+								downloadedfiles.Add(installfname);
+								assetcount++;
+								_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+							}
+							else
+							{
+								_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
+								assetcount++;
+							}
 						}
-						else
-						{
-							_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
-							assetcount++;
-						}
+
+						//Old
+						//if (!Array.Exists(Settings.Ignored_Files, x => x == asset.Filename))
+						//{
+						//	string installfname = Path.Combine(_installdir, asset.Filename);
+						//	await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+						//	downloadedfiles.Add(installfname);
+						//	assetcount++;
+						//	_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+						//}
+						//else
+						//{
+						//	_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
+						//	assetcount++;
+						//}
 					}
 					catch (Exception ex)
 					{
