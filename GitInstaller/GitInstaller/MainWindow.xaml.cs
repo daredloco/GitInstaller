@@ -56,6 +56,9 @@ namespace GitInstaller
 		}
 		private void UninstallClicked(object sender, RoutedEventArgs e)
 		{
+			if (System.Windows.Forms.DialogResult.Yes != System.Windows.Forms.MessageBox.Show("Do you really want to uninstall " + Settings.Project + "?","Are you sure?", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question))
+				return;
+			
 			using (System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog())
 			{
 				fbd.Description = "Choose the installation directory:";

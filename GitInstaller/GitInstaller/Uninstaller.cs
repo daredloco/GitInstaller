@@ -51,6 +51,7 @@ namespace GitInstaller
 
 		public static bool DoUninstall(string flocation)
 		{
+			MainWindow.Instance.prog_loading.IsIndeterminate = true;
 			flocation = Path.Combine(flocation, "gituninstaller.cfg");
 			if (!File.Exists(flocation))
 			{
@@ -108,6 +109,7 @@ namespace GitInstaller
 				}			
 			}
 			File.Delete(flocation);
+			MainWindow.Instance.prog_loading.IsIndeterminate = false;
 			return wassuccess;
 		}
 	}
