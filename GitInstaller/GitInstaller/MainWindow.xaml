@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitInstaller"
         mc:Ignorable="d"
-        Title="Project Name - Powered by GitInstaller" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="Project Name - Powered by GitInstaller" Height="500" Width="850" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             
@@ -27,7 +27,9 @@
                 <RowDefinition Height="15" />
                 <RowDefinition Height="23" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="15" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="25" />
             </Grid.RowDefinitions>
@@ -37,7 +39,8 @@
                 <ComboBoxItem Content="None"></ComboBoxItem>
             </ComboBox>
             <CheckBox Name="cb_preview" Content="Show Preview Releases" Grid.Row="4" VerticalAlignment="Center" />
-            <Button Name="bt_install" Grid.Row="9" Content="Install" />
+            <Button Name="bt_uninstall" Content="Uninstall" Grid.Row="9" />
+            <Button Name="bt_install" Grid.Row="11" Content="Install" />
             <Label Content="Version Details:" Grid.Row="6" />
             <RichTextBox Name="rtb_changes" Grid.Row="7" IsReadOnly="True" IsDocumentEnabled="True">
                 <RichTextBox.Resources>

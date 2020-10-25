@@ -27,6 +27,7 @@ namespace GitInstaller
 			cb_preview.Checked += PreviewChecked;
 			cb_preview.Unchecked += PreviewUnchecked;
 			rtb_log.IsReadOnly = true;
+			bt_uninstall.Click += UninstallClicked;
 			bt_install.IsEnabled = false;
 			bt_install.Click += InstallClicked;
 
@@ -52,6 +53,21 @@ namespace GitInstaller
 		private void PreviewChecked(object sender, RoutedEventArgs e)
 		{
 			UpdateVersions(true);
+		}
+		private void UninstallClicked(object sender, RoutedEventArgs e)
+		{
+			using (System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog())
+			{
+				fbd.Description = "Choose the installation directory:";
+				var result = fbd.ShowDialog();
+				if (result == System.Windows.Forms.DialogResult.OK)
+				{
+					if (!Uninstaller.DoUninstall(fbd.SelectedPath))
+						System.Windows.Forms.MessageBox.Show("Couldn't uninstall the software, read the log for more informations!");
+					else
+						WriteLog("Software was uninstalled successfuly!");
+				}
+			}
 		}
 
 		private void InstallClicked(object sender, RoutedEventArgs e)

@@ -13,11 +13,17 @@ namespace GitInstaller
 	{
 		public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
+			Uninstaller uninstaller = new Uninstaller(destinationDirectoryName);
+
 			if (!overwrite)
 			{
 				archive.ExtractToDirectory(destinationDirectoryName);
+				uninstaller.directories.Add(destinationDirectoryName);
+				if(Settings.Uninstall)
+					uninstaller.GenerateFile();
 				return;
 			}
+
 			foreach (ZipArchiveEntry file in archive.Entries)
 			{
 				string completeFileName = Path.Combine(destinationDirectoryName, file.FullName);
@@ -27,8 +33,13 @@ namespace GitInstaller
 					Directory.CreateDirectory(directory);
 
 				if (!string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
+				{
 					file.ExtractToFile(completeFileName, true);
+					uninstaller.files.Add(completeFileName);
+				}
 			}
+			if(Settings.Uninstall)
+				uninstaller.GenerateFile();
 		}
 
 		//Added by daRedLoCo
@@ -45,6 +56,7 @@ namespace GitInstaller
 				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
 				return;
 			}
+			Uninstaller uninstaller = new Uninstaller(destinationDirectoryName);
 			foreach(ZipArchiveEntry file in archive.Entries)
 			{
 				string completeFileName = Path.Combine(destinationDirectoryName, settings.Subfolder, file.FullName);
@@ -54,8 +66,13 @@ namespace GitInstaller
 					Directory.CreateDirectory(directory);
 
 				if (!string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
+				{
 					file.ExtractToFile(completeFileName, overwrite);
+					uninstaller.files.Add(completeFileName);
+				}
 			}
+			if(Settings.Uninstall)
+				uninstaller.GenerateFile();
 		}
 	}
 }
