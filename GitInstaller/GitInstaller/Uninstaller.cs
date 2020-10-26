@@ -55,6 +55,8 @@ namespace GitInstaller
 			flocation = Path.Combine(flocation, "gituninstaller.cfg");
 			if (!File.Exists(flocation))
 			{
+
+				MainWindow.Instance.prog_loading.IsIndeterminate = false;
 				MainWindow.Instance.WriteLog("Couldn't find gituninstaller.cfg, did you choose the right path?");
 				return false;
 			}
