@@ -41,7 +41,8 @@ You can also add a zipsettings.json file to handle special cases like subdirecto
     ]
 }
 ```
-Create an array named "Subfolders" and create an object with the name of the subfolder as key and the files included as value (array)
+Create an array named "Subfolders" and create an object with the name of the subfolder as key and the files included as value (array).
+Afterwards add this file to your zip archive. It won't be unpacked!
 
 
 ## Licenses
