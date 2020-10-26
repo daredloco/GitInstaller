@@ -30,9 +30,10 @@ namespace GitInstaller
 		internal static string Repo { get { return file.repo; } }
 		internal static bool Unzip { get { return file.unzip; } }
 		internal static bool Preview { get { return file.preview; } }
+		internal static bool Uninstall { get { return file.uninstall; } }
 		internal static string[] Ignored_Tags { get { return file.ignored_tags; } }
 		internal static string[] Ignored_Files { get { return file.ignored_files; } }
-
+		
 		/// <summary>
 		/// Returns the Url to the Releases of the GitHub Api or NULL if settings aren't loaded
 		/// </summary>
@@ -90,6 +91,7 @@ namespace GitInstaller
 			public string repo;
 			public bool unzip;
 			public bool preview;
+			public bool uninstall;
 			[JsonProperty("ignored-tags")]
 			public string[] ignored_tags;
 			[JsonProperty("ignored-files")]

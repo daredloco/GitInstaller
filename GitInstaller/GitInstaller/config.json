@@ -4,6 +4,7 @@
     "repo": "GitInstaller",
     "unzip": true,
     "preview": true,
+    "uninstall": true,
     "ignored-tags": ["v1.0"],
     "ignored-files": ["somefiletoignore.zip"]
 }

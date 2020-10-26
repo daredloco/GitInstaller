@@ -1,3 +1,7 @@
 {
-    "Subfolder": "test"
+    "Subfolder": "test",
+    "Subfolders": [
+        { "Sub1": [ "GitInstaller.exe", "config.json" ] },
+        { "Sub2": [ "FileThatDoesntExist.jpg" ] }
+    ]
 }
