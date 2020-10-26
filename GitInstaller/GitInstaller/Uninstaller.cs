@@ -72,7 +72,12 @@ namespace GitInstaller
 						{
 							if (!File.Exists(fline))
 								throw new Exception("File \"" + fline + "\" does not exist");
+							FileInfo fi = new FileInfo(fline);
+							string folderpath = fi.Directory.FullName;
 							File.Delete(fline);
+							bool folderhasfiles = Directory.EnumerateFiles(folderpath).Any();
+							if (!folderhasfiles)
+								Directory.Delete(folderpath);
 							MainWindow.Instance.WriteLog("File \"" + fline + "\" deleted!");
 						}
 						catch (Exception ex)
