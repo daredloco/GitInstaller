@@ -8,7 +8,6 @@ namespace GitInstaller
 {
 	public static class Utils
 	{
-
 		public static bool HasWildcard(string value, string wildcard, string wildcardchar = "*")
 		{
 			

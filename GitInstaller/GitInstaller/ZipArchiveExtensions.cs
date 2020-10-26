@@ -46,12 +46,7 @@ namespace GitInstaller
 		public static void ExtractWithSettings(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
 			ZipSettings settings = ZipSettings.FromStream(archive.GetEntry("zipsettings.json").Open());
-			if(settings == null)
-			{
-				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
-				return;
-			}
-			if(string.IsNullOrEmpty(settings.Subfolder))
+			if(settings == null || settings.Subfolders.Count < 1)
 			{
 				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
 				return;
@@ -59,7 +54,7 @@ namespace GitInstaller
 			Uninstaller uninstaller = new Uninstaller(destinationDirectoryName);
 			foreach(ZipArchiveEntry file in archive.Entries)
 			{
-				string completeFileName = Path.Combine(destinationDirectoryName, settings.Subfolder, file.FullName);
+				string completeFileName = Path.Combine(destinationDirectoryName, settings.GetSubfolder(file.FullName), file.FullName);
 				string directory = Path.GetDirectoryName(completeFileName);
 
 				if (!Directory.Exists(directory))
