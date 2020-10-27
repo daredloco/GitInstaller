@@ -61,6 +61,7 @@ namespace GitInstaller
 				return false;
 			}
 
+			MainWindow.Instance.WriteLog("Starting uninstall");
 			bool infiles = false;
 			bool indirs = false;
 			bool wassuccess = true;
