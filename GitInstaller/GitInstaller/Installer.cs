@@ -215,6 +215,12 @@ namespace GitInstaller
 		/// <param name="downloadedfiles">The locations of the downloaded files</param>
 		async void UnzipInstalledData(string[] downloadedfiles)
 		{
+			if(IsUpdate(new FileInfo(downloadedfiles[0]).Directory.FullName))
+			{
+				_window.WriteLog("Deleting old files from project");
+				Uninstaller.DoUninstall(new FileInfo(downloadedfiles[0]).Directory.FullName);
+			}
+
 			_window.WriteLog("Unpack zip archives...");
 			_window.prog_loading.IsIndeterminate = true;
 			await Task.Run(() => {
@@ -237,6 +243,25 @@ namespace GitInstaller
 			_window.WriteLog("Installation complete!");
 			_window.prog_loading.IsIndeterminate = false;
 			_window.bt_install.IsEnabled = true;
+		}
+
+		internal bool IsUpdate(string directory)
+		{
+			string fpath = Path.Combine(directory, "gituninstaller.cfg");
+			if (!File.Exists(fpath))
+				return false;
+
+			string[] flines = File.ReadAllLines(fpath);
+			string firstline = flines[0];
+			if (firstline.EndsWith("###") && firstline.StartsWith("###"))
+			{
+				firstline = firstline.TrimStart('#').TrimEnd('#').Replace(" Uninstaller", "");
+				if (Settings.Project != firstline)
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		internal class GitRelease
