@@ -7,6 +7,7 @@ using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
+using System.ComponentModel;
 
 namespace GitInstaller
 {
@@ -155,6 +156,9 @@ namespace GitInstaller
 				using (var client = new WebClient())
 				{
 					client.Headers.Add("user-agent", "GitInstaller");
+					client.DownloadProgressChanged += FileDownloadChanged;
+					client.DownloadFileCompleted += FileDownloadCompleted;
+
 					try
 					{
 
@@ -207,6 +211,18 @@ namespace GitInstaller
 
 			if(Settings.Unzip)
 				UnzipInstalledData(downloadedfiles.ToArray());
+		}
+
+		private void FileDownloadCompleted(object sender, AsyncCompletedEventArgs e)
+		{
+			_window.prog_loading.IsIndeterminate = true;			
+		}
+
+		private void FileDownloadChanged(object sender, DownloadProgressChangedEventArgs e)
+		{
+			_window.prog_loading.IsIndeterminate = false;
+			_window.prog_loading.Maximum = 100;
+			_window.prog_loading.Value = e.ProgressPercentage;
 		}
 
 		/// <summary>
