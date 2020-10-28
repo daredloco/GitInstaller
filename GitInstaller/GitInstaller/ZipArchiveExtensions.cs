@@ -45,7 +45,10 @@ namespace GitInstaller
 		//Added by daRedLoCo
 		public static void ExtractWithSettings(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
-			ZipSettings settings = ZipSettings.FromStream(archive.GetEntry("zipsettings.json").Open());
+			ZipSettings settings = null;
+			
+			if(archive.GetEntry("zipsettings.json") != null)
+				settings = ZipSettings.FromStream(archive.GetEntry("zipsettings.json").Open());
 			if(settings == null || settings.Subfolders.Count < 1)
 			{
 				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
