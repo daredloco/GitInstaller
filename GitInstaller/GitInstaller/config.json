@@ -1,7 +1,7 @@
 {
     "project": "GitInstaller",
-    "user": "software-inc-multiplayer",
-    "repo": "software-inc-multiplayer",
+    "user": "daredloco",
+    "repo": "GitInstaller",
     "unzip": true,
     "preview": true,
     "uninstall": true,
