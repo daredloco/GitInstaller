@@ -17,7 +17,10 @@ namespace GitInstaller
 
 		public string GetSubfolder(string fname, string sub = "")
 		{
-			SubFolder sf = Subfolders.Find(x => x.Files.Find(y => y == fname) != null);
+			SubFolder sf = null;
+			string ffolder = fname.Replace(fname.Split('/')[fname.Split('/').Length - 1], "").Replace(fname.Split('\\')[fname.Split('\\').Length - 1],"");
+			sf = Subfolders.Find(x => x.Directories.Find(y => y == ffolder) != null);
+			sf = Subfolders.Find(x => x.Files.Find(y => y == fname) != null);
 			if (sf == null)
 				return "";
 
@@ -52,7 +55,11 @@ namespace GitInstaller
 							sub.Name = dict.Key;
 							foreach (JToken token in dict.Value.Children<JToken>().ToList())
 							{
-								sub.Files.Add(token.Value<string>());
+								Utils.ZipType ztype = Utils.FileOrDir(token.Value<string>());
+								if (ztype == Utils.ZipType.File)
+									sub.Files.Add(token.Value<string>());
+								else if (ztype == Utils.ZipType.Directory)
+									sub.Directories.Add(token.Value<string>());	
 							}
 						}
 						zs.Subfolders.Add(sub);
@@ -71,6 +78,7 @@ namespace GitInstaller
 		{
 			public string Name;
 			public List<string> Files = new List<string>();
+			public List<string> Directories = new List<string>();
 		}
 	}
 }
