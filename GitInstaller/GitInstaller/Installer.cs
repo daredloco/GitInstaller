@@ -95,13 +95,6 @@ namespace GitInstaller
 							Releases.Add(robj);
 						}
 					}
-
-					//Old
-					//if(!Array.Exists(Settings.Ignored_Tags, x => x == robj.Tag))
-					//{
-					//	idcount++;
-					//	Releases.Add(robj);
-					//}
 				}
 
 				_window.cb_versions.SelectedIndex = 0;

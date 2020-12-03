@@ -40,6 +40,12 @@ namespace GitInstaller
 			}
 			else
 			{
+				ManualWindow mwin = new ManualWindow();
+				if(mwin.ShowDialog() == true)
+				{
+
+					return;
+				}
 				MessageBox.Show("The Installer can't progress because the settings file couldn't loaded!");
 				Environment.Exit(1);
 			}
