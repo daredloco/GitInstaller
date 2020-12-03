@@ -1,7 +1,7 @@
 # GitInstaller
 A simple installer for software released on GitHub for Windows
 
-![Installer Preview](https://www.rowa-digital.ch/installer.png)
+![Installer Preview](https://www.rowa-digital.ch/ginstaller.png)
 
 
 ## Usage
@@ -46,6 +46,7 @@ Afterwards add this file to your zip archive. It won't be unpacked!
 
 ## Manual Installation
 If the Installer won't find a "config.json" file in the same directory, it will show a prompt where you can enter the url of the repository.
+
 WARNING: This is a preview function so exception handling isn't completely done!
 
 ## Licenses
