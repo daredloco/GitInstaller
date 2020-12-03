@@ -13,7 +13,7 @@ namespace GitInstaller
 
 		public ZipSettings() { }
 
-		public string GetSubfolder(string fname, string sub = "")
+		public string GetSubfolder(string fname)
 		{
 			SubFolder sf = null;
 			string ffolder = fname.Replace(fname.Split('/')[fname.Split('/').Length - 1], "").Replace(fname.Split('\\')[fname.Split('\\').Length - 1],"");
