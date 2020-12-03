@@ -44,6 +44,9 @@ You can also add a zipsettings.json file to handle special cases like subdirecto
 Create an array named "Subfolders" and create an object with the name of the subfolder as key and the files included as value (array).
 Afterwards add this file to your zip archive. It won't be unpacked!
 
+## Manual Installation
+If the Installer won't find a "config.json" file in the same directory, it will show a prompt where you can enter the url of the repository.
+WARNING: This is a preview function so exception handling isn't completely done!
 
 ## Licenses
 - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
