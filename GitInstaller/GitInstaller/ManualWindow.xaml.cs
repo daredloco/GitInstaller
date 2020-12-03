@@ -36,7 +36,7 @@ namespace GitInstaller
 				Uri url = new Uri(tb_url.Text);
 				if (url.Host != "github.com" && url.Host != "www.github.com")
 				{
-					MessageBox.Show("Invalid URL. Needs to be a github.com url!");
+					MessageBox.Show("Invalid URL. Needs to be a github.com url!", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
 					return;
 				}
 
@@ -60,7 +60,7 @@ namespace GitInstaller
 			}
 			catch(Exception ex)
 			{
-				MessageBox.Show("Error creating configuration file... => " + ex.Message);
+				MessageBox.Show("Error creating configuration file... => " + ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 		}
