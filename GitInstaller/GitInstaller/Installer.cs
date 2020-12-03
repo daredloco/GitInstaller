@@ -95,13 +95,6 @@ namespace GitInstaller
 							Releases.Add(robj);
 						}
 					}
-
-					//Old
-					//if(!Array.Exists(Settings.Ignored_Tags, x => x == robj.Tag))
-					//{
-					//	idcount++;
-					//	Releases.Add(robj);
-					//}
 				}
 
 				_window.cb_versions.SelectedIndex = 0;
@@ -109,7 +102,7 @@ namespace GitInstaller
 			_window.prog_loading.IsIndeterminate = false;
 			if(Releases.Count < 1)
 			{
-				MessageBox.Show("No releases found for this repository! Can't progress with the installation...");
+				MessageBox.Show("No releases found for this repository! Can't progress with the installation...", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
 				Environment.Exit(2);
 				return;
 			}
@@ -178,21 +171,6 @@ namespace GitInstaller
 								assetcount++;
 							}
 						}
-
-						//Old
-						//if (!Array.Exists(Settings.Ignored_Files, x => x == asset.Filename))
-						//{
-						//	string installfname = Path.Combine(_installdir, asset.Filename);
-						//	await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
-						//	downloadedfiles.Add(installfname);
-						//	assetcount++;
-						//	_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
-						//}
-						//else
-						//{
-						//	_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
-						//	assetcount++;
-						//}
 					}
 					catch (Exception ex)
 					{

@@ -40,7 +40,12 @@ namespace GitInstaller
 			}
 			else
 			{
-				MessageBox.Show("The Installer can't progress because the settings file couldn't loaded!");
+				ManualWindow mwin = new ManualWindow();
+				if(mwin.ShowDialog() == true)
+				{
+					return;
+				}
+				MessageBox.Show("The Installer can't progress because the settings file couldn't loaded!", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
 				Environment.Exit(1);
 			}
 		}
@@ -66,7 +71,7 @@ namespace GitInstaller
 				if (result == System.Windows.Forms.DialogResult.OK)
 				{
 					if (!Uninstaller.DoUninstall(fbd.SelectedPath))
-						System.Windows.Forms.MessageBox.Show("Couldn't uninstall the software, read the log for more informations!");
+						MessageBox.Show("Couldn't uninstall the software, read the log for more informations!", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
 					else
 						WriteLog("Software was uninstalled successfuly!");
 				}
@@ -109,7 +114,7 @@ namespace GitInstaller
 			{
 				if (ex.HResult != -2146233086)
 				{
-					MessageBox.Show("There was an unexpected error while changing the version!");
+					MessageBox.Show("There was an unexpected error while changing the version!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 					throw ex;
 				}
 			}

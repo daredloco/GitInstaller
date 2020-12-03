@@ -3,11 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace GitInstaller
 {
 	public static class Utils
 	{
+		public enum ZipType
+		{
+			File,
+			Directory,
+			None
+		}
+
+		public static ZipType FileOrDir(string path)
+		{
+			if (path.EndsWith("/"))
+				return ZipType.Directory;
+			else
+				return ZipType.File;
+		}
+
 		public static bool HasWildcard(string value, string wildcard, string wildcardchar = "*")
 		{
 			
