@@ -23,6 +23,9 @@ namespace GitInstaller
 			directories.AddRange(dirs);
 		}
 
+		/// <summary>
+		/// Generates a gituninstaller.cfg file inside the installation directory
+		/// </summary>
 		public void GenerateFile()
 		{
 			string fname = Path.Combine(location, "gituninstaller.cfg");
@@ -46,6 +49,11 @@ namespace GitInstaller
 			File.WriteAllLines(fname, flines.ToArray());
 		}
 
+		/// <summary>
+		/// Uninstall the installation at the location. Won't work if it can't find a gituninstaller.cfg file!
+		/// </summary>
+		/// <param name="flocation">The location of the installation</param>
+		/// <returns>True if uninstall was a success, else returns false</returns>
 		public static bool DoUninstall(string flocation)
 		{
 			MainWindow.Instance.prog_loading.IsIndeterminate = true;

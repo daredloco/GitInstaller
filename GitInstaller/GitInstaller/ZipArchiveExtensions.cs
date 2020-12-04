@@ -3,9 +3,15 @@ using System.IO.Compression;
 
 namespace GitInstaller
 {
-	// From https://stackoverflow.com/questions/14795197/forcefully-replacing-existing-files-during-extracting-file-using-system-io-compr/30425148	
 	public static class ZipArchiveExtensions
 	{
+		// From https://stackoverflow.com/questions/14795197/forcefully-replacing-existing-files-during-extracting-file-using-system-io-compr/30425148
+		/// <summary>
+		/// Extracts a ZipArchive to a destination (with overwrite functionality)
+		/// </summary>
+		/// <param name="archive">The archive to unpack</param>
+		/// <param name="destinationDirectoryName">The destination directory</param>
+		/// <param name="overwrite">If true, it will overwrite the content inside the destination directory</param>
 		public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
 			Uninstaller uninstaller = new Uninstaller(destinationDirectoryName);
@@ -38,6 +44,12 @@ namespace GitInstaller
 		}
 
 		//Added by daRedLoCo
+		/// <summary>
+		/// Extracts a ZipArchive to a destination (with overwrite functionality and ZipSettings inside the archive)
+		/// </summary>
+		/// <param name="archive">The archive to unpack</param>
+		/// <param name="destinationDirectoryName">The destination directory</param>
+		/// <param name="overwrite">If true, it will overwrite the content inside the destination directory</param>
 		public static void ExtractWithSettings(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
 			ZipSettings settings = null;
