@@ -7,6 +7,11 @@ using System.Windows.Documents;
 using System.Text.RegularExpressions;
 using System.Windows.Navigation;
 using System.Diagnostics;
+using System.Windows.Media;
+using System.Net;
+using System.IO;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace GitInstaller
 {
@@ -194,19 +199,29 @@ namespace GitInstaller
 							string link = newmatch.Value.Trim('(', ')');
 							string title = newtitlematch.Value.Trim('[', ']');
 							WriteLog(match.Value + " => " + link + "-" + title);
-							//if (link.EndsWith(".jpg") || link.EndsWith(".png"))
-							//	newline = "";
-							//else
-							//	newline.Replace(match.Value, link);
 							isLink = true;
 							match = match.NextMatch();
 							if(!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
 							{
 								link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
 							}
-							Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
-							hyperlink.RequestNavigate += HyperlinkPressedInChanges;
-							para.Inlines.Add(hyperlink);
+
+							if(link.EndsWith(".jpg") || link.EndsWith(".png"))
+							{
+								BitmapImage bitmap = new BitmapImage(new Uri(link));
+								System.Windows.Controls.Image image = new System.Windows.Controls.Image
+								{
+									Source = bitmap
+								};
+								para.Inlines.Add(image);
+							}
+							else
+							{
+								Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+								hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+								para.Inlines.Add(hyperlink);
+							}
+							
 						}
 
 						if(!isLink)
