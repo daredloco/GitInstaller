@@ -200,6 +200,8 @@ namespace GitInstaller
 							string title = newtitlematch.Value.Trim('[', ']');
 							isLink = true;
 							match = match.NextMatch();
+							if (link.StartsWith("www."))
+								link = "http://" + link;
 							if (!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
 							{
 								link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
@@ -207,12 +209,23 @@ namespace GitInstaller
 
 							if (link.EndsWith(".jpg") || link.EndsWith(".png"))
 							{
-								BitmapImage bitmap = new BitmapImage(new Uri(link));
-								System.Windows.Controls.Image image = new System.Windows.Controls.Image
+								try
 								{
-									Source = bitmap
-								};
-								para.Inlines.Add(image);
+									BitmapImage bitmap = new BitmapImage(new Uri(link));
+									System.Windows.Controls.Image image = new System.Windows.Controls.Image
+									{
+										Source = bitmap
+									};
+									para.Inlines.Add(image);
+								}
+								catch(Exception ex)
+								{
+									WriteLog("Couldn't fetch image from URL '" + link + "', converted it to a link => " + ex.Message);
+									Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+									hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+									para.Inlines.Add(hyperlink);
+								}
+								
 							}
 							else
 							{
