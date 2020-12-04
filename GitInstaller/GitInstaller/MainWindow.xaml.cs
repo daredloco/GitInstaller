@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Text.RegularExpressions;
+using System.Windows.Navigation;
+using System.Diagnostics;
 
 namespace GitInstaller
 {
@@ -178,19 +180,37 @@ namespace GitInstaller
 					Match newmatch = Pattern.Match(match.Value);
 					string link = newmatch.Value.Trim('(',')');
 					WriteLog(match.Value + " => " + link);
-
-					if(link.EndsWith(".jpg") || link.EndsWith(".png"))
+					if (link.EndsWith(".jpg") || link.EndsWith(".png"))
 						newline = "";
 					else
 						newline.Replace(match.Value, link);
-					
 
 					match = match.NextMatch();
 					para.FontStyle = FontStyles.Italic;
 				}
-				para.Inlines.Add(newline);
+
+				foreach(string newword in newline.Split(' '))
+				{
+					if(newword.StartsWith("https://") || newword.StartsWith("http://") || newword.StartsWith("www."))
+					{
+						Hyperlink hyperlink = new Hyperlink(new Run(newword)) { NavigateUri = new Uri(newword), IsEnabled = true };
+						hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+						para.Inlines.Add(hyperlink);
+					}
+					else
+					{
+						para.Inlines.Add(new Run(newword));
+					}
+					para.Inlines.Add(" ");
+				}
+
 				rtb_changes.Document.Blocks.Add(para);
 			}
+		}
+
+		private void HyperlinkPressedInChanges(object sender, RequestNavigateEventArgs e)
+		{
+			Process.Start(e.Uri.ToString());
 		}
 
 		internal void UpdateVersions(bool withpreviews)
