@@ -13,7 +13,12 @@ namespace GitInstaller
 
 		public ZipSettings() { }
 
-		public string GetSubfolder(string fname, string sub = "")
+		/// <summary>
+		/// Gets the subfolder of a file
+		/// </summary>
+		/// <param name="fname">The file to fetch the subfolder for</param>
+		/// <returns>The subfolder for the file</returns>
+		public string GetSubfolder(string fname)
 		{
 			SubFolder sf = null;
 			string ffolder = fname.Replace(fname.Split('/')[fname.Split('/').Length - 1], "").Replace(fname.Split('\\')[fname.Split('\\').Length - 1],"");
@@ -25,6 +30,11 @@ namespace GitInstaller
 			return sf.Name;
 		}
 
+		/// <summary>
+		/// Returns the ZipSettings from a File
+		/// </summary>
+		/// <param name="fname">The file containing the ZipSettings</param>
+		/// <returns>A ZipSettings object</returns>
 		public static ZipSettings FromFile(string fname)
 		{
 			if (File.Exists(fname))
@@ -35,6 +45,11 @@ namespace GitInstaller
 			return null;
 		}
 
+		/// <summary>
+		/// Returns the ZipSettings from a Stream
+		/// </summary>
+		/// <param name="stream">The stream with the ZipSettings</param>
+		/// <returns>A ZipSettings object</returns>
 		public static ZipSettings FromStream(Stream stream)
 		{
 			using (StreamReader reader = new StreamReader(stream))

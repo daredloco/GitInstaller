@@ -239,6 +239,11 @@ namespace GitInstaller
 			_window.bt_install.IsEnabled = true;
 		}
 
+		/// <summary>
+		/// Checks if there already exists an installation inside the directory or if its a fresh installation
+		/// </summary>
+		/// <param name="directory">The installation directory</param>
+		/// <returns>True if a gituninstaller.cfg was found, else returns false</returns>
 		internal bool IsUpdate(string directory)
 		{
 			string fpath = Path.Combine(directory, "gituninstaller.cfg");
