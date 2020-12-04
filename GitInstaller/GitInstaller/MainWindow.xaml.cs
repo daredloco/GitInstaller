@@ -5,6 +5,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Text.RegularExpressions;
+using System.Windows.Navigation;
+using System.Diagnostics;
+using System.Windows.Media;
+using System.Net;
+using System.IO;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace GitInstaller
 {
@@ -170,27 +177,111 @@ namespace GitInstaller
 					para.FontWeight = FontWeights.ExtraBlack;
 				}
 
-				//Get Links and Images
-				Match match = Regex.Match(line, "!\\[.*\\]?\\(.*\\)");
-				while(match.Success)
+				foreach(string newword in newline.Split(' '))
 				{
-					Regex Pattern = new Regex("\\(.*\\)");
-					Match newmatch = Pattern.Match(match.Value);
-					string link = newmatch.Value.Trim('(',')');
-					WriteLog(match.Value + " => " + link);
-
-					if(link.EndsWith(".jpg") || link.EndsWith(".png"))
-						newline = "";
+					if(newword.StartsWith("https://") || newword.StartsWith("http://") || newword.StartsWith("www."))
+					{
+						Hyperlink hyperlink = new Hyperlink(new Run(newword)) { NavigateUri = new Uri(newword), IsEnabled = true };
+						hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+						para.Inlines.Add(hyperlink);
+					}
 					else
-						newline.Replace(match.Value, link);
-					
+					{
+						//Get Links and Images
+						Match match = Regex.Match(newword, "!\\[.*\\]?\\(.*\\)");
+						bool isLink = false;
+						if(match.Success)
+						{
+							Regex Pattern = new Regex("\\(.*\\)");
+							Regex TitlePattern = new Regex("\\[.*\\]");
+							Match newmatch = Pattern.Match(match.Value);
+							Match newtitlematch = TitlePattern.Match(match.Value);
+							string link = newmatch.Value.Trim('(', ')');
+							string title = newtitlematch.Value.Trim('[', ']');
+							isLink = true;
+							match = match.NextMatch();
+							if (link.StartsWith("www."))
+								link = "http://" + link;
+							if (!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
+							{
+								link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
+							}
 
-					match = match.NextMatch();
-					para.FontStyle = FontStyles.Italic;
+							if (link.EndsWith(".jpg") || link.EndsWith(".png"))
+							{
+								try
+								{
+									BitmapImage bitmap = new BitmapImage(new Uri(link));
+									System.Windows.Controls.Image image = new System.Windows.Controls.Image
+									{
+										Source = bitmap
+									};
+									para.Inlines.Add(image);
+								}
+								catch(Exception ex)
+								{
+									WriteLog("Couldn't fetch image from URL '" + link + "', converted it to a link => " + ex.Message);
+									Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+									hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+									para.Inlines.Add(hyperlink);
+								}
+								
+							}
+							else
+							{
+								Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+								hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+								para.Inlines.Add(hyperlink);
+							}
+						}
+
+						//OLD
+						//while (match.Success)
+						//{
+						//	Regex Pattern = new Regex("\\(.*\\)");
+						//	Regex TitlePattern = new Regex("\\[.*\\]");
+						//	Match newmatch = Pattern.Match(match.Value);
+						//	Match newtitlematch = TitlePattern.Match(match.Value);
+						//	string link = newmatch.Value.Trim('(', ')');
+						//	string title = newtitlematch.Value.Trim('[', ']');
+						//	WriteLog(match.Value + " => " + link + "-" + title);
+						//	isLink = true;
+						//	match = match.NextMatch();
+						//	if (!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
+						//	{
+						//		link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
+						//	}
+
+						//	if (link.EndsWith(".jpg") || link.EndsWith(".png"))
+						//	{
+						//		BitmapImage bitmap = new BitmapImage(new Uri(link));
+						//		System.Windows.Controls.Image image = new System.Windows.Controls.Image
+						//		{
+						//			Source = bitmap
+						//		};
+						//		para.Inlines.Add(image);
+						//	}
+						//	else
+						//	{
+						//		Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+						//		hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+						//		para.Inlines.Add(hyperlink);
+						//	}
+						//}
+
+						if(!isLink)
+							para.Inlines.Add(new Run(newword));
+					}
+					para.Inlines.Add(" ");
 				}
-				para.Inlines.Add(newline);
+
 				rtb_changes.Document.Blocks.Add(para);
 			}
+		}
+
+		private void HyperlinkPressedInChanges(object sender, RequestNavigateEventArgs e)
+		{
+			Process.Start(e.Uri.ToString());
 		}
 
 		internal void UpdateVersions(bool withpreviews)
