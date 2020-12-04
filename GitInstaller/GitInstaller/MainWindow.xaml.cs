@@ -188,9 +188,9 @@ namespace GitInstaller
 					else
 					{
 						//Get Links and Images
-						Match match = Regex.Match(line, "!\\[.*\\]?\\(.*\\)");
+						Match match = Regex.Match(newword, "!\\[.*\\]?\\(.*\\)");
 						bool isLink = false;
-						while (match.Success)
+						if(match.Success)
 						{
 							Regex Pattern = new Regex("\\(.*\\)");
 							Regex TitlePattern = new Regex("\\[.*\\]");
@@ -198,15 +198,14 @@ namespace GitInstaller
 							Match newtitlematch = TitlePattern.Match(match.Value);
 							string link = newmatch.Value.Trim('(', ')');
 							string title = newtitlematch.Value.Trim('[', ']');
-							WriteLog(match.Value + " => " + link + "-" + title);
 							isLink = true;
 							match = match.NextMatch();
-							if(!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
+							if (!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
 							{
 								link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
 							}
 
-							if(link.EndsWith(".jpg") || link.EndsWith(".png"))
+							if (link.EndsWith(".jpg") || link.EndsWith(".png"))
 							{
 								BitmapImage bitmap = new BitmapImage(new Uri(link));
 								System.Windows.Controls.Image image = new System.Windows.Controls.Image
@@ -221,8 +220,41 @@ namespace GitInstaller
 								hyperlink.RequestNavigate += HyperlinkPressedInChanges;
 								para.Inlines.Add(hyperlink);
 							}
-							
 						}
+
+						//OLD
+						//while (match.Success)
+						//{
+						//	Regex Pattern = new Regex("\\(.*\\)");
+						//	Regex TitlePattern = new Regex("\\[.*\\]");
+						//	Match newmatch = Pattern.Match(match.Value);
+						//	Match newtitlematch = TitlePattern.Match(match.Value);
+						//	string link = newmatch.Value.Trim('(', ')');
+						//	string title = newtitlematch.Value.Trim('[', ']');
+						//	WriteLog(match.Value + " => " + link + "-" + title);
+						//	isLink = true;
+						//	match = match.NextMatch();
+						//	if (!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
+						//	{
+						//		link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
+						//	}
+
+						//	if (link.EndsWith(".jpg") || link.EndsWith(".png"))
+						//	{
+						//		BitmapImage bitmap = new BitmapImage(new Uri(link));
+						//		System.Windows.Controls.Image image = new System.Windows.Controls.Image
+						//		{
+						//			Source = bitmap
+						//		};
+						//		para.Inlines.Add(image);
+						//	}
+						//	else
+						//	{
+						//		Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+						//		hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+						//		para.Inlines.Add(hyperlink);
+						//	}
+						//}
 
 						if(!isLink)
 							para.Inlines.Add(new Run(newword));
