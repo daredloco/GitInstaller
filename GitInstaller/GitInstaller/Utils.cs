@@ -30,12 +30,12 @@ namespace GitInstaller
 		}
 
 		/// <summary>
-		/// ???
+		/// Checks if value has wildcard in it
 		/// </summary>
-		/// <param name="value"></param>
-		/// <param name="wildcard"></param>
-		/// <param name="wildcardchar"></param>
-		/// <returns></returns>
+		/// <param name="value">The value to check if the wildcard is inside</param>
+		/// <param name="wildcard">The wildcard search value</param>
+		/// <param name="wildcardchar">The character representing the wildcard</param>
+		/// <returns>True if wildcard is inside value or false otherwise</returns>
 		public static bool HasWildcard(string value, string wildcard, string wildcardchar = "*")
 		{
 			
