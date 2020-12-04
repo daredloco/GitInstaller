@@ -172,23 +172,6 @@ namespace GitInstaller
 					para.FontWeight = FontWeights.ExtraBlack;
 				}
 
-				//Get Links and Images
-				Match match = Regex.Match(line, "!\\[.*\\]?\\(.*\\)");
-				while(match.Success)
-				{
-					Regex Pattern = new Regex("\\(.*\\)");
-					Match newmatch = Pattern.Match(match.Value);
-					string link = newmatch.Value.Trim('(',')');
-					WriteLog(match.Value + " => " + link);
-					if (link.EndsWith(".jpg") || link.EndsWith(".png"))
-						newline = "";
-					else
-						newline.Replace(match.Value, link);
-
-					match = match.NextMatch();
-					para.FontStyle = FontStyles.Italic;
-				}
-
 				foreach(string newword in newline.Split(' '))
 				{
 					if(newword.StartsWith("https://") || newword.StartsWith("http://") || newword.StartsWith("www."))
@@ -199,7 +182,35 @@ namespace GitInstaller
 					}
 					else
 					{
-						para.Inlines.Add(new Run(newword));
+						//Get Links and Images
+						Match match = Regex.Match(line, "!\\[.*\\]?\\(.*\\)");
+						bool isLink = false;
+						while (match.Success)
+						{
+							Regex Pattern = new Regex("\\(.*\\)");
+							Regex TitlePattern = new Regex("\\[.*\\]");
+							Match newmatch = Pattern.Match(match.Value);
+							Match newtitlematch = TitlePattern.Match(match.Value);
+							string link = newmatch.Value.Trim('(', ')');
+							string title = newtitlematch.Value.Trim('[', ']');
+							WriteLog(match.Value + " => " + link + "-" + title);
+							//if (link.EndsWith(".jpg") || link.EndsWith(".png"))
+							//	newline = "";
+							//else
+							//	newline.Replace(match.Value, link);
+							isLink = true;
+							match = match.NextMatch();
+							if(!link.StartsWith("https://") && !link.StartsWith("http://") && !link.StartsWith("www."))
+							{
+								link = $"https://github.com/{Settings.User}/{Settings.Repo}/{link}";
+							}
+							Hyperlink hyperlink = new Hyperlink(new Run(title)) { NavigateUri = new Uri(link), IsEnabled = true };
+							hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+							para.Inlines.Add(hyperlink);
+						}
+
+						if(!isLink)
+							para.Inlines.Add(new Run(newword));
 					}
 					para.Inlines.Add(" ");
 				}
