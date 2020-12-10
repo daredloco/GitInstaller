@@ -185,6 +185,13 @@ namespace GitInstaller
 						hyperlink.RequestNavigate += HyperlinkPressedInChanges;
 						para.Inlines.Add(hyperlink);
 					}
+					else if(newword.StartsWith("#") && int.TryParse(newword.Replace("#", ""), out int n))
+					{
+						string url = $"https://github.com/{Settings.User}/{Settings.Repo}/issues/{newword.Replace("#","")}";
+						Hyperlink hyperlink = new Hyperlink(new Run(newword)) { NavigateUri = new Uri(url), IsEnabled = true };
+						hyperlink.RequestNavigate += HyperlinkPressedInChanges;
+						para.Inlines.Add(hyperlink);
+					}
 					else
 					{
 						//Get Links and Images
