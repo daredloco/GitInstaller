@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
+using System.Windows.Forms;
 
 namespace GitInstaller
 {
@@ -12,17 +14,25 @@ namespace GitInstaller
 		/// <param name="archive">The archive to unpack</param>
 		/// <param name="destinationDirectoryName">The destination directory</param>
 		/// <param name="overwrite">If true, it will overwrite the content inside the destination directory</param>
-		public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
+		public static bool ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
 			Uninstaller uninstaller = new Uninstaller(destinationDirectoryName);
-
+			bool extractionSuccessful = true;
 			if (!overwrite)
 			{
-				archive.ExtractToDirectory(destinationDirectoryName);
-				uninstaller.directories.Add(destinationDirectoryName);
-				if(Settings.Uninstall)
-					uninstaller.GenerateFile();
-				return;
+				try
+				{
+					archive.ExtractToDirectory(destinationDirectoryName);
+					uninstaller.directories.Add(destinationDirectoryName);
+					if (Settings.Uninstall)
+						uninstaller.GenerateFile();
+					return true;
+				}
+				catch(Exception ex)
+				{
+					MessageBox.Show("Exception while extracting files to directory! => " + ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return false;
+				}				
 			}
 
 			foreach (ZipArchiveEntry file in archive.Entries)
@@ -35,12 +45,27 @@ namespace GitInstaller
 
 				if (!string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
 				{
+					while (!Utils.CanBeWrittenTo(completeFileName))
+					{
+						if (DialogResult.Cancel == MessageBox.Show($"The file '{completeFileName}' is locked or in use and can't be overwritten! Please close the process thats blocking it and press OK or press CANCEL to stop the installing process.", "Warning!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning))
+						{
+							MessageBox.Show("Can't progress with the installation!", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							extractionSuccessful = false;
+							break;
+						}
+					}
+					if (!extractionSuccessful)
+						break;
 					file.ExtractToFile(completeFileName, true);
 					uninstaller.files.Add(completeFileName);
 				}
 			}
 			if(Settings.Uninstall)
 				uninstaller.GenerateFile();
+
+			if (!extractionSuccessful)
+				return false;
+			return true;
 		}
 
 		//Added by daRedLoCo
@@ -50,16 +75,15 @@ namespace GitInstaller
 		/// <param name="archive">The archive to unpack</param>
 		/// <param name="destinationDirectoryName">The destination directory</param>
 		/// <param name="overwrite">If true, it will overwrite the content inside the destination directory</param>
-		public static void ExtractWithSettings(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
+		public static bool ExtractWithSettings(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
 		{
 			ZipSettings settings = null;
-			
+			bool extractionSuccessful = true;
 			if(archive.GetEntry("zipsettings.json") != null)
 				settings = ZipSettings.FromStream(archive.GetEntry("zipsettings.json").Open());
 			if(settings == null || settings.Subfolders.Count < 1)
 			{
-				ExtractToDirectory(archive, destinationDirectoryName, overwrite);
-				return;
+				return ExtractToDirectory(archive, destinationDirectoryName, overwrite);
 			}
 			Uninstaller uninstaller = new Uninstaller(destinationDirectoryName);
 			foreach(ZipArchiveEntry file in archive.Entries)
@@ -72,12 +96,28 @@ namespace GitInstaller
 
 				if (!string.IsNullOrEmpty(file.Name) && file.Name != "zipsettings.json")
 				{
+					while(!Utils.CanBeWrittenTo(completeFileName))
+					{
+						if(DialogResult.Cancel == MessageBox.Show($"The file '{completeFileName}' is locked or in use and can't be overwritten! Please close the process thats blocking it and press OK or press CANCEL to stop the installing process.", "Warning!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning))
+						{
+							MessageBox.Show("Can't progress with the installation!", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							extractionSuccessful = false;
+							break;
+						}
+					}
+					if (!extractionSuccessful)
+						break;
 					file.ExtractToFile(completeFileName, overwrite);
 					uninstaller.files.Add(completeFileName);
 				}
 			}
 			if(Settings.Uninstall)
 				uninstaller.GenerateFile();
+
+			
+			if (!extractionSuccessful)
+				return false;
+			return true;
 		}
 	}
 }

@@ -58,5 +58,30 @@ namespace GitInstaller
 			}
 			return false;
 		}
+
+		/// <summary>
+		/// Checks whether the file can be writte to or if its blocked by another process
+		/// </summary>
+		/// <param name="fname">The filename</param>
+		/// <returns>True if the file can be written to and false if it can't</returns>
+		public static bool CanBeWrittenTo(string fname)
+		{
+			if (!File.Exists(fname))
+				return true;
+			try
+			{
+				FileStream fs = new FileStream(fname, FileMode.Open, FileAccess.Write);
+				fs.Close();
+				return true;
+			}
+			catch (IOException)
+			{
+				return false;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 	}
 }

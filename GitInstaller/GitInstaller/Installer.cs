@@ -209,6 +209,7 @@ namespace GitInstaller
 		/// <param name="downloadedfiles">The locations of the downloaded files</param>
 		async void UnzipInstalledData(string[] downloadedfiles)
 		{
+			bool wasSuccess = true;
 			if(IsUpdate(new FileInfo(downloadedfiles[0]).Directory.FullName))
 			{
 				_window.WriteLog("Deleting old files from project");
@@ -227,14 +228,22 @@ namespace GitInstaller
 						{
 							using(ZipArchive archive = new ZipArchive(fs))
 							{
-								ZipArchiveExtensions.ExtractWithSettings(archive, fi.DirectoryName, true);
+								wasSuccess = ZipArchiveExtensions.ExtractWithSettings(archive, fi.DirectoryName, true);
 							}
 						}
 						File.Delete(fname);
 					}
 				}
 			});
-			_window.WriteLog("Installation complete!");
+			if(!wasSuccess)
+			{
+				Uninstaller.DoUninstall(new FileInfo(downloadedfiles[0]).DirectoryName);
+				_window.WriteLog("There was an error while extracting the archive!");
+			}
+			else
+			{
+				_window.WriteLog("Installation complete!");
+			}
 			_window.prog_loading.IsIndeterminate = false;
 			_window.bt_install.IsEnabled = true;
 		}
