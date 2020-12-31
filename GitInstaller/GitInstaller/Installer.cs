@@ -120,11 +120,30 @@ namespace GitInstaller
 		/// <param name="installdir">The installation directory</param>
 		internal void StartInstallation(int releaseindex, string installdir)
 		{
-			_window.bt_install.IsEnabled = false;
-			_installrelease = Releases[releaseindex];
-			_window.WriteLog("Starting installation of release \"" + _installrelease.Tag + "\" to \"" + installdir + "\"...");
-			_installdir = installdir;
-			DownloadAssets();
+			if(Settings.ShowLicense)
+			{
+				LicenseWindow licenseWindow = new LicenseWindow();
+				if (licenseWindow.ShowDialog() == true)
+				{
+					_window.bt_install.IsEnabled = false;
+					_installrelease = Releases[releaseindex];
+					_window.WriteLog("Starting installation of release \"" + _installrelease.Tag + "\" to \"" + installdir + "\"...");
+					_installdir = installdir;
+					DownloadAssets();
+				}
+				else
+				{
+					_window.WriteLog("You need to accept the license to proceed with the installation.");
+				}
+			}
+			else
+			{
+				_window.bt_install.IsEnabled = false;
+				_installrelease = Releases[releaseindex];
+				_window.WriteLog("Starting installation of release \"" + _installrelease.Tag + "\" to \"" + installdir + "\"...");
+				_installdir = installdir;
+				DownloadAssets();
+			}
 		}
 
 		/// <summary>
