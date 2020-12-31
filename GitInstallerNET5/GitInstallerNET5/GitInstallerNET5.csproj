@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>GitInstaller</AssemblyName>
+    <RootNamespace>GitInstallerNET5</RootNamespace>
+    <Authors>Roman Wanner</Authors>
+    <Company>Roman Wanner</Company>
+    <Description>Simple Installer for Github</Description>
+    <Copyright>© Roman Wanner 2020</Copyright>
+    <PackageProjectUrl>https://github.com/daredloco/GitInstaller/</PackageProjectUrl>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <FileVersion>1.9.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+</Project>
