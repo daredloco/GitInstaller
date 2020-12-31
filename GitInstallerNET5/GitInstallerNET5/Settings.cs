@@ -31,6 +31,7 @@ namespace GitInstallerNET5
 		internal static bool Unzip { get { return file.unzip; } }
 		internal static bool Preview { get { return file.preview; } }
 		internal static bool Uninstall { get { return file.uninstall; } }
+		internal static bool ShowLicense { get { return file.showlicense; } }
 		internal static string[] Ignored_Tags { get { return file.ignored_tags; } }
 		internal static string[] Ignored_Files { get { return file.ignored_files; } }
 		
@@ -40,6 +41,11 @@ namespace GitInstallerNET5
 		internal static Uri ApiUrl
 		{
 			get { if (State == SettingsState.Loaded) { return new Uri($"https://api.github.com/repos/{file.user}/{file.repo}/releases"); } else { return null; } }
+		}
+
+		internal static Uri LicenseUrl
+		{
+			get { if (State == SettingsState.Loaded) { return new Uri($"https://api.github.com/repos/{file.user}/{file.repo}/license"); } else { return null; } }
 		}
 
 		/// <summary>
@@ -92,6 +98,7 @@ namespace GitInstallerNET5
 			public bool unzip;
 			public bool preview;
 			public bool uninstall;
+			public bool showlicense;
 			[JsonProperty("ignored-tags")]
 			public string[] ignored_tags;
 			[JsonProperty("ignored-files")]

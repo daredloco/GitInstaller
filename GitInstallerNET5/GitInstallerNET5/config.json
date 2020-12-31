@@ -1,0 +1,11 @@
+{
+    "project": "GitInstaller",
+    "user": "daredloco",
+    "repo": "GitInstaller",
+    "unzip": true,
+    "preview": true,
+    "uninstall": true,
+    "showlicense": true,
+    "ignored-tags": [ "v1.0" ],
+    "ignored-files": [ "somefiletoignore.zip" ]
+}
