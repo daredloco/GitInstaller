@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
-namespace GitInstaller
+namespace GitInstallerNET5
 {
 	/// <summary>
 	/// Interaktionslogik für ManualWindow.xaml
@@ -33,8 +33,9 @@ namespace GitInstaller
 				string ustr = url.AbsoluteUri;
 				ustr = ustr.Replace("://", "");
 
-				Settings.SettingsFile sfile = new Settings.SettingsFile() {
-					ignored_files = new string[]{ "" },
+				Settings.SettingsFile sfile = new Settings.SettingsFile()
+				{
+					ignored_files = new string[] { "" },
 					ignored_tags = new string[] { "" },
 					project = ustr.Split('/')[2],
 					uninstall = false,
@@ -48,7 +49,7 @@ namespace GitInstaller
 				Process.Start("GitInstaller.exe");
 				Environment.Exit(4);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show("Error creating configuration file... => " + ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;

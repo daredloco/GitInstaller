@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using Newtonsoft.Json;
 
-namespace GitInstaller
+namespace GitInstallerNET5
 {
 	internal static class Settings
 	{

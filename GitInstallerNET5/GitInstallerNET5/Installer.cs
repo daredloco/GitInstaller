@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.IO.Compression;
 using System.ComponentModel;
 
-namespace GitInstaller
+namespace GitInstallerNET5
 {
 	internal class Installer
 	{
@@ -120,7 +120,7 @@ namespace GitInstaller
 		/// <param name="installdir">The installation directory</param>
 		internal void StartInstallation(int releaseindex, string installdir)
 		{
-			if(Settings.ShowLicense)
+			if (Settings.ShowLicense)
 			{
 				LicenseWindow licenseWindow = new LicenseWindow();
 				if (licenseWindow.ShowDialog() == true)
