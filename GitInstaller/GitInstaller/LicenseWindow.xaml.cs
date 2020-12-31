@@ -50,12 +50,9 @@ namespace GitInstaller
 			{
 				client.Headers.Add("user-agent", "GitInstaller");
 				string licenseJson = await client.DownloadStringTaskAsync(Settings.LicenseUrl.AbsoluteUri);
-				MessageBox.Show(licenseJson);
 				JObject job = JsonConvert.DeserializeObject<JObject>(licenseJson);
 				//License
 				JToken license = job.Value<JToken>("license");
-				MessageBox.Show(license.Value<string>("url"));
-
 				client.Headers["user-agent"] = "gitinstaller";
 				client.Headers.Add("accept", "application/vnd.github.v3+json");
 				string licJson = await client.DownloadStringTaskAsync(new Uri(license.Value<string>("url")).AbsoluteUri);
