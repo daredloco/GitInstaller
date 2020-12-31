@@ -14,6 +14,7 @@ namespace GitInstaller
 		public ManualWindow()
 		{
 			InitializeComponent();
+			Title = "Select a Repository:";
 			bt_confirm.Click += ClickConfirm;
 		}
 

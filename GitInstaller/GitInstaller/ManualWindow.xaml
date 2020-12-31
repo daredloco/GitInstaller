@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitInstaller"
         mc:Ignorable="d"
-        Title="ManualWindow" Height="125" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Select Repository:" Height="125" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
