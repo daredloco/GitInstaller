@@ -71,8 +71,11 @@ namespace GitInstallerNET5
 
 					//Author
 					JObject authorobj = job.Value<JObject>("author");
-					robj.AuthorName = authorobj.Value<string>("login");
-					robj.AuthorUrl = authorobj.Value<string>("html_url");
+					if(authorobj != null)
+					{
+						robj.AuthorName = authorobj.Value<string>("login");
+						robj.AuthorUrl = authorobj.Value<string>("html_url");
+					}
 
 					//Assets
 					JToken assets = job.Value<JToken>("assets");

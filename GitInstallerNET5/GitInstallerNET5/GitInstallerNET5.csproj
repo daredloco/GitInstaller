@@ -12,8 +12,8 @@
     <Description>Simple Installer for Github</Description>
     <Copyright>© Roman Wanner 2020</Copyright>
     <PackageProjectUrl>https://github.com/daredloco/GitInstaller/</PackageProjectUrl>
-    <AssemblyVersion>1.9.0.0</AssemblyVersion>
-    <FileVersion>1.9.0.0</FileVersion>
+    <AssemblyVersion>1.9.2.0</AssemblyVersion>
+    <FileVersion>1.9.2.0</FileVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -26,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="4.1.0" />
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
