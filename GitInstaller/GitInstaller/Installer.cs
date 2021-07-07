@@ -57,7 +57,7 @@ namespace GitInstaller
 				int idcount = 0;
 				Releases.Clear();
 				_window.cb_versions.Items.Clear();
-				
+
 				foreach (JObject job in jobjs)
 				{
 					GitRelease robj = new GitRelease();
@@ -71,8 +71,11 @@ namespace GitInstaller
 
 					//Author
 					JObject authorobj = job.Value<JObject>("author");
-					robj.AuthorName = authorobj.Value<string>("login");
-					robj.AuthorUrl = authorobj.Value<string>("html_url");
+					if(authorobj != null)
+					{
+						robj.AuthorName = authorobj.Value<string>("login");
+						robj.AuthorUrl = authorobj.Value<string>("html_url");
+					}
 
 					//Assets
 					JToken assets = job.Value<JToken>("assets");
