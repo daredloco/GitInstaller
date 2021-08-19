@@ -90,13 +90,21 @@ namespace GitInstaller
 					}
 
 
-					foreach(string ignoredtags in Settings.Ignored_Tags)
+					if(Settings.Ignored_Tags.Length > 0)
 					{
-						if(!Utils.HasWildcard(robj.Tag,ignoredtags))
+						foreach (string ignoredtags in Settings.Ignored_Tags)
 						{
-							idcount++;
-							Releases.Add(robj);
+							if (!Utils.HasWildcard(robj.Tag, ignoredtags))
+							{
+								idcount++;
+								Releases.Add(robj);
+							}
 						}
+					}
+					else
+					{
+						idcount++;
+						Releases.Add(robj);
 					}
 				}
 
