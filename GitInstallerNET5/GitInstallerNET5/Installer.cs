@@ -184,21 +184,32 @@ namespace GitInstallerNET5
 					try
 					{
 
-						foreach(string ignoredfile in Settings.Ignored_Files)
+						if(Settings.Ignored_Files.Length > 0)
 						{
-							if(!Utils.HasWildcard(asset.Filename, ignoredfile))
+							foreach (string ignoredfile in Settings.Ignored_Files)
 							{
-								string installfname = Path.Combine(_installdir, asset.Filename);
-								await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
-								downloadedfiles.Add(installfname);
-								assetcount++;
-								_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+								if (!Utils.HasWildcard(asset.Filename, ignoredfile))
+								{
+									string installfname = Path.Combine(_installdir, asset.Filename);
+									await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+									downloadedfiles.Add(installfname);
+									assetcount++;
+									_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+								}
+								else
+								{
+									_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
+									assetcount++;
+								}
 							}
-							else
-							{
-								_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
-								assetcount++;
-							}
+						}
+						else
+						{
+							string installfname = Path.Combine(_installdir, asset.Filename);
+							await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+							downloadedfiles.Add(installfname);
+							assetcount++;
+							_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
 						}
 					}
 					catch (Exception ex)

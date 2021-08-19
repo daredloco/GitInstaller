@@ -184,23 +184,34 @@ namespace GitInstaller
 
 					try
 					{
-
-						foreach(string ignoredfile in Settings.Ignored_Files)
+						if(Settings.Ignored_Files.Length > 0)
 						{
-							if(!Utils.HasWildcard(asset.Filename, ignoredfile))
+							foreach (string ignoredfile in Settings.Ignored_Files)
 							{
-								string installfname = Path.Combine(_installdir, asset.Filename);
-								await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
-								downloadedfiles.Add(installfname);
-								assetcount++;
-								_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
-							}
-							else
-							{
-								_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
-								assetcount++;
+								if (!Utils.HasWildcard(asset.Filename, ignoredfile))
+								{
+									string installfname = Path.Combine(_installdir, asset.Filename);
+									await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+									downloadedfiles.Add(installfname);
+									assetcount++;
+									_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+								}
+								else
+								{
+									_window.WriteLog($"Asset \"{asset.Filename}\" will be ignored...");
+									assetcount++;
+								}
 							}
 						}
+						else
+						{
+							string installfname = Path.Combine(_installdir, asset.Filename);
+							await client.DownloadFileTaskAsync(new Uri(asset.DownloadUrl), installfname);
+							downloadedfiles.Add(installfname);
+							assetcount++;
+							_window.WriteLog($"Asset downloaded... ({assetcount}/{maxcount})");
+						}
+						
 					}
 					catch (Exception ex)
 					{
@@ -239,6 +250,12 @@ namespace GitInstaller
 		/// <param name="downloadedfiles">The locations of the downloaded files</param>
 		async void UnzipInstalledData(string[] downloadedfiles)
 		{
+			if(downloadedfiles.Length == 0)
+			{
+				_window.WriteLog("No files downloaded!");
+				return;
+			}
+
 			bool wasSuccess = true;
 			if(IsUpdate(new FileInfo(downloadedfiles[0]).Directory.FullName))
 			{
