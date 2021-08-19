@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitInstaller", "GitInstaller\GitInstaller.csproj", "{6B88A56A-98E2-450D-A059-65BD18919AE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitInstallerNET5", "..\GitInstallerNET5\GitInstallerNET5\GitInstallerNET5.csproj", "{40E2DF0D-A017-4EBD-844A-92708E425293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitInstallerNET5", "..\GitInstallerNET5\GitInstallerNET5\GitInstallerNET5.csproj", "{40E2DF0D-A017-4EBD-844A-92708E425293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitInstallerConsole", "..\GitInstallerConsole\GitInstallerConsole.csproj", "{953EC8C9-0E83-4BF5-BF17-4C9141FCD0BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{40E2DF0D-A017-4EBD-844A-92708E425293}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40E2DF0D-A017-4EBD-844A-92708E425293}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40E2DF0D-A017-4EBD-844A-92708E425293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953EC8C9-0E83-4BF5-BF17-4C9141FCD0BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953EC8C9-0E83-4BF5-BF17-4C9141FCD0BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953EC8C9-0E83-4BF5-BF17-4C9141FCD0BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953EC8C9-0E83-4BF5-BF17-4C9141FCD0BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
